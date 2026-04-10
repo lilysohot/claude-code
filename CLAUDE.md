@@ -19,18 +19,28 @@ bun run dev
 # Pipe mode
 echo "say hello" | bun run src/entrypoints/cli.tsx -p
 
-# Build (outputs dist/cli.js, ~25MB)
+# Build (outputs dist/cli.js + ~450 chunk files, Node.js compatible)
 bun run build
-```
 
-No test runner is configured. No linter is configured.
+# Lint
+bun run lint
+
+# Format
+bun run format
+
+# Run tests
+bun test
+
+# Health check
+bun run health
+```
 
 ## Architecture
 
 ### Runtime & Build
 
 - **Runtime**: Bun (not Node.js). All imports, builds, and execution use Bun APIs.
-- **Build**: `bun build src/entrypoints/cli.tsx --outdir dist --target bun` — single-file bundle.
+- **Build**: `bun run build.ts` — uses `Bun.build()` with code splitting, outputs `dist/cli.js` + ~450 chunk files. Post-processed for Node.js compatibility.
 - **Module system**: ESM (`"type": "module"`), TSX with `react-jsx` transform.
 - **Monorepo**: Bun workspaces — internal packages live in `packages/` resolved via `workspace:*`.
 
